@@ -1,5 +1,7 @@
 package id.sch.smktelkom_mlg.learn.recyclerview3.adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import id.sch.smktelkom_mlg.learn.recyclerview3.R;
@@ -22,7 +25,20 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder>
 {
 
     ArrayList<Hotel> hotelList;
+    IHotelAdapter mIHotelAdapter;
 
+
+    public interface IHotelAdapter
+    {
+        void doClick(int pos);
+    }
+
+    public HotelAdapter(Context context, ArrayList<Hotel> hotelList)
+    {
+
+        this.hotelList = hotelList;
+        mIHotelAdapter = (IHotelAdapter) context;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -38,7 +54,7 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder>
         Hotel hotel = hotelList.get(position);
         holder.tvjudul.setText(hotel.judul);
         holder.tvdeskripsi.setText(hotel.deskripsi);
-        holder.ivfoto.setImageDrawable(hotel.foto);
+        holder.ivfoto.setImageURI(Uri.parse(hotel.foto));
     }
 
     @Override
@@ -51,6 +67,8 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
+
+
         ImageView ivfoto;
         TextView tvjudul;
         TextView tvdeskripsi;
@@ -61,11 +79,20 @@ public class HotelAdapter extends RecyclerView.Adapter<HotelAdapter.ViewHolder>
             ivfoto = (ImageView) itemView.findViewById(R.id.imageView);
             tvjudul = (TextView) itemView.findViewById(R.id.textViewJudul);
             tvdeskripsi = (TextView) itemView.findViewById(R.id.textViewDeskripsi);
+
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    mIHotelAdapter.doClick(getAdapterPosition());
+                }
+
+            });
+
         }
+
     }
 
-    public HotelAdapter(ArrayList<Hotel> hotelList)
-    {
-        this.hotelList = hotelList;
-    }
+
 }
