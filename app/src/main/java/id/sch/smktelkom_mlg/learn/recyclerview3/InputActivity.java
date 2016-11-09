@@ -74,7 +74,7 @@ public class InputActivity extends AppCompatActivity
         etDetail.setText(hotel.detail);
         etLokasi.setText(hotel.lokasi);
         uriFoto = Uri.parse(hotel.foto);
-        ivFoto.setImageURI(uriFoto);;
+        ivFoto.setImageURI(uriFoto);
     }
 
     private void doSave()
